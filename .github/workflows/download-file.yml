@@ -34,15 +34,13 @@ jobs:
       - name: Set Version Info
         id: version
         run: |
-          echo "version=v$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
-          echo "timestamp=$(date)" >> $GITHUB_OUTPUT
+          echo "version=v$(date +%Y-%m-%d-%H%M)" >> $GITHUB_OUTPUT
 
       - name: Create Release on GitHub
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.version.outputs.version }}
           files: ${{ steps.filename.outputs.filename }}
-          name: Release ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
           body: |
-            Automatically created on ${{ steps.version.outputs.timestamp }}
-            with file from: ${{ github.event.inputs.FILE_URL }}
+            file from: ${{ github.event.inputs.FILE_URL }}
