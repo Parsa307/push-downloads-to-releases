@@ -24,7 +24,7 @@ jobs:
           git config --global user.name "Parsast"
 
       - name: Download from Booru
-        run: curl -s https://yande.re/post.json?tags=id:${{ github.event.inputs.ID }} | jq -r '.[].jpeg_url' | aria2c -i-
+        run: curl -s "https://yande.re/post.json?tags=id:${{ github.event.inputs.ID }}" | jq -r '.[].jpeg_url' | aria2c -i-
 
       - name: Get Downloaded Filename
         id: filename
