@@ -1,10 +1,10 @@
-name: Download File
+name: Download from yande.re
 
 on:
   workflow_dispatch:
     inputs:
-      FILE_URL:
-        description: 'FILE_URL'
+      ID:
+        description: 'ID'
         required: true
 
 jobs:
@@ -23,8 +23,8 @@ jobs:
           git config --global user.email "parsastdev@duck.com"
           git config --global user.name "Parsast"
 
-      - name: Download File
-        run: aria2c ${{ github.event.inputs.FILE_URL }}
+      - name: Download from Booru
+        run: curl -s https://yande.re/post.json?tags=id:${{ github.event.inputs.ID }} | jq -r '.[].jpeg_url' | aria2c -i-
 
       - name: Get Downloaded Filename
         id: filename
