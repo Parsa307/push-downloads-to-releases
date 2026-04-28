@@ -24,7 +24,7 @@ jobs:
           git config --global user.name "Parsast"
 
       - name: Download File
-        run: aria2c ${{ github.event.inputs.FILE_URL }}
+        run: aria2c "${{ github.event.inputs.FILE_URL }}"
 
       - name: Get Downloaded Filename
         id: filename
