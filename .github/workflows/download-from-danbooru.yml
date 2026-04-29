@@ -1,0 +1,42 @@
+name: Download from Danbooru
+
+on:
+  workflow_dispatch:
+    inputs:
+      ID:
+        description: 'ID'
+        required: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "parsastdev@duck.com"
+          git config --global user.name "Parsast"
+
+      - name: Download from Booru
+        run: curl -s "https://danbooru.donmai.us/posts.json?tags=id:${{ github.event.inputs.ID }}" | jq -r '.[].file_url' | aria2c -i-
+
+      - name: Get Downloaded Filename
+        id: filename
+        run: echo "filename=$(ls -t | head -1)" >> $GITHUB_OUTPUT
+
+      - name: Set Version Info
+        id: version
+        run: echo "version=v$(date +%Y-%m-%d-%H%M)" >> $GITHUB_OUTPUT
+
+      - name: Create Release on GitHub
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          files: ${{ steps.filename.outputs.filename }}
+          name: ${{ steps.version.outputs.version }}
