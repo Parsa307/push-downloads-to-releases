@@ -18,11 +18,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "parsastdev@duck.com"
-          git config --global user.name "Parsast"
-
       - name: Download from Booru
         run: curl -s "https://yande.re/post.json?tags=id:${{ github.event.inputs.ID }}" | jq -r '.[].jpeg_url' | aria2c -i-
 

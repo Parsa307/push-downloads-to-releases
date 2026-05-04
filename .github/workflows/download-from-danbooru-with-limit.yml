@@ -20,11 +20,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "parsastdev@duck.com"
-          git config --global user.name "Parsast"
-
       - name: Download from Booru
         run: curl -s "https://danbooru.donmai.us/posts.json?limit=${{ github.event.inputs.LIMIT }}&tags=${{ github.event.inputs.TAG }}" | jq -r '.[].file_url' | aria2c -i-
 
