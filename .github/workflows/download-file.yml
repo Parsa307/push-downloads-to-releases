@@ -24,5 +24,3 @@ jobs:
         with:
           draft: true
           files: ${{ steps.filename.outputs.filename }}
-          body: |
-            file from: ${{ github.event.inputs.FILE_URL }}
